@@ -1,43 +1,58 @@
-import React, { useState } from 'react';
+// pages/index.js
+import { useState } from 'react';
 
-function Home() {
+const Home = () => {
   const [prompt, setPrompt] = useState('');
-  const [generatedText, setGeneratedText] = useState('');
+  const [response, setResponse] = useState('');
+  const [error, setError] = useState(null);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     try {
-      const response = await fetch('/api/generate', {
+      const res = await fetch('/.netlify/functions/generate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
       }
 
-      setGeneratedText(data.generatedText);
+      const data = await res.json();
+      setResponse(data.reply);
+      setError(null);
     } catch (error) {
-      console.error(error);
-      // Handle error display
+      console.error('Error calling OpenAI function:', error);
+      setError(error.message || 'An error occurred.');
     }
   };
 
   return (
     <div>
-      <h1>Generate Text with OpenAI</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="prompt">Prompt:</label>
-        <textarea id="prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-        <button type="submit">Generate</button>
-      </form>
-      {generatedText && <p>{generatedText}</p>}
+      <h1>OpenAI Chat with Netlify Function</h1>
+      <div>
+        <label>
+          Enter your prompt:
+          <input
+            type="text"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+          />
+        </label>
+        <button onClick={handleSubmit}>Submit</button>
+      </div>
+      {error && (
+        <div style={{ color: 'red' }}>
+          <p>Error: {error}</p>
+        </div>
+      )}
+      {response && (
+        <div>
+          <h2>Response:</h2>
+          <p>{response}</p>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Home;

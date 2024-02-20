@@ -1,25 +1,47 @@
-const openai = require('openai');
+// functions/generate.js
+const fetch = require('node-fetch');
 
-exports.handler = async (event, context) => {
-  // Extract user input (e.g., from event.body)
-  const prompt = event.body.prompt;
+exports.handler = async function (event, context) {
+  try {
+    console.log('Function started.');
 
-  // Set your OpenAI API key securely (e.g., using environment variables)
-  openai.api_key = process.env.OPENAI_API_KEY;
+    const requestBody = JSON.parse(event.body);
 
-  // Call the OpenAI API with the prompt
-  const response = await openai.Completion.create({
-    engine: "text-davinci-003",
-    prompt: prompt,
-    max_tokens: 150,
-    temperature: 0.7,
-    n: 1,
-    stop: null,
-  });
+    console.log('Making OpenAI API request...');
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo-0125',
+        messages: [
+          { role: 'system', content: 'You output html code. Always include css. Never add additional formatting.' },
+          { role: 'user', content: requestBody.prompt },
+        ],
+      }),
+    });
 
-  // Return the generated text in the response
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ generatedText: response.choices[0].text }),
-  };
+    console.log('Checking response status...');
+    if (!response.ok) {
+      throw new Error(`OpenAI API error: ${response.status} - ${await response.text()}`);
+    }
+
+    console.log('Parsing response JSON...');
+    const data = await response.json();
+
+    console.log('Returning response.');
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ reply: data.choices[0].message.content }),
+    };
+  } catch (error) {
+    console.error('Error calling OpenAI function:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
+  }
 };
+
