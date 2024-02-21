@@ -3,7 +3,7 @@
   "version": "0.5.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "netlify dev",
     "build": "next build",
     "export": "next export",
     "net": "./node_modules/.bin/netlify dev"
@@ -16,6 +16,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "netlify": "^13.1.14",
     "netlify-cli": "^17.16.2"
   }
 }
