@@ -21,7 +21,7 @@ exports.handler = async function (event, context) {
           {
             role: "system",
             content:
-              "Create working prototypes with complete html, css, and javascript code based on the user prompt. Output complete html files. Add functionality via cdn if needed to complete the prototype. Do not include additional formatting nor comments nor markdown.",
+              "Create working prototypes with complete html, css, and javascript code based on the user prompt. Interpret additional requirements that fit in your context. Output complete html files. Add functionality via cdn if needed to complete the prototype. Do not include additional formatting nor comments nor markdown.",
           },
           { role: "user", content: requestBody.prompt },
         ],
