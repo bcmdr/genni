@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@uiw/codemirror-extensions-basic-setup": "^4.21.22",
+    "@uiw/codemirror-extensions-events": "^4.21.22",
     "@uiw/codemirror-extensions-langs": "^4.21.22",
     "@uiw/codemirror-theme-vscode": "^4.21.22",
     "@uiw/react-codemirror": "^4.21.22",

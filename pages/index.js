@@ -8,8 +8,20 @@ const Home = () => {
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
   const [currentCode, setCurrentCode] = useState("");
+  const [currentRender, setCurrentRender] = useState(
+    `<div style="margin: 2rem; font-family: sans-serif"><h1>Bring Your Ideas to Life<br />by Prototyping in Seconds.</h1><p style="position: fixed; bottom: 0; right: 2rem;">The future is now.</marquee></p></div>`,
+  );
+  const [revealed, setRevealed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleEditorChange = (code) => {
+    setCurrentCode(code);
+    setCurrentRender(code);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
       const res = await fetch("/.netlify/functions/generate", {
         method: "POST",
@@ -23,45 +35,64 @@ const Home = () => {
       const data = await res.json();
       setResponse(data.reply);
       setCurrentCode(data.reply);
+      setCurrentRender(data.reply);
       setError(null);
+      setLoading(false);
     } catch (error) {
       console.error("Error calling OpenAI function:", error);
       setError(error.message || "An error occurred.");
+      setLoading(false);
     }
   };
 
   return (
     <div>
       <div>
-        <label>
+        <form
+          style={{ display: "flex", backgroundColor: "black" }}
+          onSubmit={handleSubmit}
+        >
           <input
-            style={{ width: "calc(100% - 100px)", padding: "0.5rem" }}
+            className={styles.input}
             type="text"
-            placeholder="Enter your prompt"
+            placeholder="Type Here to Describe Your App..."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-        </label>
-        <button
-          style={{ width: "100px", padding: "0.5rem" }}
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
+          <button
+            className={styles.button}
+            style={{ width: "100px", padding: "0.5rem" }}
+            onClick={handleSubmit}
+          >
+            Generate
+          </button>
+        </form>
       </div>
-      {error && (
-        <div style={{ color: "red" }}>
-          <p>Error: {error}</p>
-        </div>
-      )}
-      <CodeEditor code={currentCode} />
+      <div style={{ display: "flex", margin: "0.25rem" }}>
+        {loading && (
+          <progress
+            style={{ flexGrow: 1 }}
+            className={styles.progress}
+          ></progress>
+        )}
+      </div>
+      <div style={{ margin: "0rem 2rem" }}>
+        {error && (
+          <div style={{ color: "red" }}>
+            <p>Error: {error}</p>
+          </div>
+        )}
+        {revealed && (
+          <CodeEditor code={currentCode} onEditorChange={handleEditorChange} />
+        )}
+      </div>
       <iframe
         id="result-iframe"
         sandbox="allow-scripts"
         frameborder="0"
         width="100%"
         height="100%"
-        srcdoc={currentCode}
+        srcdoc={currentRender}
       ></iframe>
     </div>
   );
