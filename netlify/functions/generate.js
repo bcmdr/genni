@@ -16,12 +16,12 @@ exports.handler = async function (event, context) {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        max_tokens: 1000,
+        max_tokens: 1500,
         messages: [
           {
             role: "system",
             content:
-              "Create working minimal prototypes with complete code based on the user prompt. Output complete html files. Add functionality if needed to complete the prototype. Do not include additional formatting nor comments nor markdown.",
+              "Create working prototypes with complete html, css, and javascript code based on the user prompt. Output complete html files. Add functionality via cdn if needed to complete the prototype. Do not include additional formatting nor comments nor markdown.",
           },
           { role: "user", content: requestBody.prompt },
         ],

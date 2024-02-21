@@ -57,6 +57,7 @@ const Home = () => {
       <CodeEditor code={currentCode} />
       <iframe
         id="result-iframe"
+        sandbox="allow-scripts"
         frameborder="0"
         width="100%"
         height="100%"
