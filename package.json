@@ -9,11 +9,17 @@
     "net": "./node_modules/.bin/netlify dev"
   },
   "dependencies": {
+    "@uiw/codemirror-extensions-basic-setup": "^4.21.22",
+    "@uiw/codemirror-extensions-langs": "^4.21.22",
+    "@uiw/codemirror-theme-vscode": "^4.21.22",
+    "@uiw/react-codemirror": "^4.21.22",
     "cypress": "^13.4.0",
     "next": "^14.0.1",
     "openai": "^4.28.0",
+    "prismjs": "^1.29.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-simple-code-editor": "^0.13.1"
   },
   "devDependencies": {
     "netlify": "^13.1.14",

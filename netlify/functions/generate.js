@@ -15,12 +15,13 @@ exports.handler = async function (event, context) {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo-0125",
+        model: "gpt-3.5-turbo",
+        max_tokens: 1000,
         messages: [
           {
             role: "system",
             content:
-              "You output html code. Always include css. Never add additional formatting.",
+              "Create working minimal prototypes with complete code based on the user prompt. Output complete html files. Add functionality if needed to complete the prototype. Do not include additional formatting or comments.",
           },
           { role: "user", content: requestBody.prompt },
         ],

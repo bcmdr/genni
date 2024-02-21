@@ -1,15 +1,18 @@
 // pages/index.js
-import { useState } from 'react';
+import { useState } from "react";
+import CodeEditor from "@components/CodeEditor";
+import styles from "./index.module.css";
 
 const Home = () => {
-  const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
+  const [currentCode, setCurrentCode] = useState("");
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch('/.netlify/functions/generate', {
-        method: 'POST',
+      const res = await fetch("/.netlify/functions/generate", {
+        method: "POST",
         body: JSON.stringify({ prompt }),
       });
 
@@ -19,38 +22,46 @@ const Home = () => {
 
       const data = await res.json();
       setResponse(data.reply);
+      setCurrentCode(data.reply);
       setError(null);
     } catch (error) {
-      console.error('Error calling OpenAI function:', error);
-      setError(error.message || 'An error occurred.');
+      console.error("Error calling OpenAI function:", error);
+      setError(error.message || "An error occurred.");
     }
   };
 
   return (
     <div>
-      <h1>OpenAI Chat with Netlify Function</h1>
       <div>
         <label>
-          Enter your prompt:
           <input
+            style={{ width: "calc(100% - 100px)", padding: "0.5rem" }}
             type="text"
+            placeholder="Enter your prompt"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
         </label>
-        <button onClick={handleSubmit}>Submit</button>
+        <button
+          style={{ width: "100px", padding: "0.5rem" }}
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
       </div>
       {error && (
-        <div style={{ color: 'red' }}>
+        <div style={{ color: "red" }}>
           <p>Error: {error}</p>
         </div>
       )}
-      {response && (
-        <div>
-          <h2>Response:</h2>
-          <p>{response}</p>
-        </div>
-      )}
+      <CodeEditor code={currentCode} />
+      <iframe
+        id="result-iframe"
+        frameborder="0"
+        width="100%"
+        height="100%"
+        srcdoc={currentCode}
+      ></iframe>
     </div>
   );
 };
