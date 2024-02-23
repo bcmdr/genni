@@ -1,9 +1,8 @@
 .header {
   position: sticky;
+  top: 0;
   background: black;
   padding: 0.5rem;
-
-
 }
 
 .form {
@@ -12,6 +11,7 @@
 }
 
 .input {
+  font-size: 0.9rem;
   flex-shrink: 0;
   flex-grow: 1;
   border: none;
@@ -34,7 +34,7 @@
 .input {
   display: inline-block;
   line-height: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
 }
 
 .progress {

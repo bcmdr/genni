@@ -3,9 +3,6 @@ import { useState } from "react";
 import CodeEditor from "@components/CodeEditor";
 import styles from "./index.module.css";
 
-
-
-
 const Home = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
