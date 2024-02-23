@@ -3,6 +3,8 @@
   width: 100%;
   top: 0;
   background: black;
+  display: flex;
+  flex-direction: column; 
 }
 
 .form {
@@ -12,13 +14,17 @@
 }
 
 .input {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   flex-shrink: 0;
   flex-grow: 1;
   border: none;
   color: white;
   background: transparent;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.5rem 0.25rem 0rem;
+}
+
+.input:focus{
+  padding-left: 0.5rem;
 }
 
 .button {
@@ -38,7 +44,8 @@
 }
 
 .progress {
-  display: block;
-  width: 100%;
-  margin-top: 0.5rem;
+  display: inline-block;
+  width: calc(100% - 1rem);
+  margin: auto;
+  margin-bottom: 0.5rem;
 }

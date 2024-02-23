@@ -56,7 +56,7 @@ const Home = () => {
           <input
             className={styles.input}
             type="text"
-            placeholder="Type Here to Describe Your Web App..."
+            placeholder="Type Here to Describe Your Idea..."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
