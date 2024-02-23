@@ -47,7 +47,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <main className=".main">
       <header className={styles.header}>
         <form
           className={styles.form}
@@ -88,10 +88,9 @@ const Home = () => {
         sandbox="allow-scripts allow-modals"
         frameBorder="0"
         width="100%"
-        height="100%"
         srcDoc={currentRender}
       ></iframe>
-    </div>
+    </main>
   );
 };
 
