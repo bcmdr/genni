@@ -1,10 +1,11 @@
 #result-iframe {
-  height: calc(100vh - 5rem);
+  margin-top: 40px;
+  height: calc(100vh - 80px);
   width: 100%;
 }
 
 body {
   padding: 0px;
   margin: 0px;
-  height: 100vh;
+  min-height: 100vh;
 }
