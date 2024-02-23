@@ -21,9 +21,9 @@ exports.handler = async function (event, context) {
           {
             role: "system",
             content:
-              "Create working prototypes with complete html, css, and javascript code based on the user prompt. Only include body and the containing script tags. Interpret additional requirements that fit in your context. Output only script tags, move them into the body tag, and display only the body tag and its contents. Use inline styles only. Add functionality via cdn if needed to complete the prototype. Do not include comments nor markdown formatting. Assume the output will be rendered immediately.",
+              "You create working front-end web apps or websites with complete html, css, and javascript code based on the user's description of requirements or ideas. Single, complete HTML file for website or web app with required css and js for my idea. Only use web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown. Assume the output will be rendered immediately in an iframe with CORS restrictions. Always fill with sample content or load the first example.",
           },
-          { role: "user", content: requestBody.prompt },
+          { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page for this idea: ${requestBody.prompt}` },
         ],
       }),
     });
