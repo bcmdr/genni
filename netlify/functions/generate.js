@@ -15,13 +15,13 @@ exports.handler = async function (event, context) {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-3.5-turbo-0125",
         max_tokens: 1500,
         messages: [
           {
             role: "system",
             content:
-              "You create working front-end web apps or websites with complete html, css, and javascript code based on the user's description of requirements or ideas. Single, complete HTML file for website or web app with required css and js for my idea. Only use web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown. Assume the output will be rendered immediately in an iframe with CORS restrictions. Always fill with sample content or load the first example.",
+              "You create working front-end web apps or websites with complete html, css, and javascript code based on the user's description of requirements or ideas. Respond only with a single, complete HTML file for website or web app with required css and js for the user's idea in their prompt. Only use open web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown. Assume the output will be rendered immediately in an iframe with CORS restrictions.",
           },
           { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page for this idea: ${requestBody.prompt}` },
         ],
