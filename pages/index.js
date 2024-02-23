@@ -65,7 +65,7 @@ const Home = () => {
           />
           <button
             className={styles.button}
-            onClick={handleSubmit}
+            type="submit"
           >
             Generate
           </button>
