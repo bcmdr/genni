@@ -13,6 +13,7 @@ const Home = () => {
   );
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentUsage, setCurrentUsage] = useState({});
 
   const handleEditorChange = (code) => {
     setCurrentCode(code);
@@ -37,11 +38,12 @@ const Home = () => {
       setResponse(data.reply);
       setCurrentCode(data.reply);
       setCurrentRender(data.reply);
+      setCurrentUsage(data.usage)
       setError(null);
       setLoading(false);
     } catch (error) {
       console.error("Error calling OpenAI function:", error);
-      setCurrentRender( `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Hmm...<br />That didn't work.</h1><p style="padding: 1rem; text-align: right">Please try again.</marquee></p></div>`);
+      setCurrentRender( `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Hmm...<br />That didn't work.</h1><p style="padding: 1rem; text-align: right">Please try again.</p></div>`);
       setLoading(false);
     }
   };
@@ -90,6 +92,13 @@ const Home = () => {
         width="100%"
         srcDoc={currentRender}
       ></iframe>
+      <section className="usage">
+        <ul>
+          <li>{currentUsage.prompt_tokens}</li>
+          <li>{currentUsage.completion_tokens}</li>
+          <li>{currentUsage.total_tokens}</li>
+        </ul>
+        </section>
     </main>
   );
 };

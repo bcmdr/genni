@@ -16,12 +16,12 @@ exports.handler = async function (event, context) {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        max_tokens: 1500,
+        max_tokens: 4096,
         messages: [
           {
             role: "system",
             content:
-              "You create working front-end web apps or websites with complete html, css, and javascript code based on the user's description of requirements or ideas. Single, complete HTML file for website or web app with required css and js for my idea. Only use web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown. Assume the output will be rendered immediately in an iframe with CORS restrictions. Always fill with sample content or load the first example.",
+              "You build accessibly designed, stylish, modern, impressive, fully-featured, working front-end web apps and websites with complete html, css, and javascript code based on the user's description of requirements and ideas of the user interface. Only ever return a single, complete HTML file with no other formatting. Only use web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown. Assume the output will be rendered immediately in an iframe with CORS restrictions. Interpret additional features where needed to make more complete or impressive. Always use flexbox or grid and sizing tricks like minmax. The user interface of the result should have input and output. If state is needed, use Vue unless another framework is specified. Use box-sizing: border-box in the css. Always load demo content and load the first example of the demo if possible",
           },
           { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page for this idea: ${requestBody.prompt}` },
         ],
@@ -41,7 +41,7 @@ exports.handler = async function (event, context) {
     console.log("Returning response.");
     return {
       statusCode: 200,
-      body: JSON.stringify({ reply: data.choices[0].message.content }),
+      body: JSON.stringify({ reply: data.choices[0].message.content , usage: data.usage }),
     };
   } catch (error) {
     console.error("Error calling OpenAI function:", error);
