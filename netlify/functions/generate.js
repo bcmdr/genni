@@ -23,7 +23,7 @@ exports.handler = async function (event, context) {
             content:
               "You turn ideas into prototypes. User enters a prompt, and you interpret it as a game, website, or web app. Then build an html page that meets the requirements of the idea. Only ever return a single, complete HTML file with no other formatting. Only use web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown.",
           },
-          { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page with css and javascript for my idea, which is: ${requestBody.prompt} (with many features)`},
+          { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page with css and javascript for my idea, which is: ${requestBody.prompt} (with many features, use box-sizing: border-box in css)`},
         ],
       }),
     });
