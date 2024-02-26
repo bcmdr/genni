@@ -17,13 +17,14 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo-0125",
         max_tokens: 4096,
+        temperature: 0.5,
         messages: [
           {
             role: "system",
             content:
               "You turn ideas into prototypes. User enters a prompt, and you interpret it as a game, website, or web app. Then build an html page that meets the requirements of the idea. Only ever return a single, complete HTML file with no other formatting. Only use web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown.",
           },
-          { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page with css (use 'box-sizing: border-box' in css code) and javascript for my idea, which is: ${requestBody.prompt} `},
+          { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page with css and javascript for my idea, which is: ${requestBody.prompt} `},
         ],
       }),
     });
