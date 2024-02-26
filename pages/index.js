@@ -49,7 +49,7 @@ const Home = () => {
   };
 
   return (
-    <main className=".main">
+    <>
       <header className={styles.header}>
         <form
           className={styles.form}
@@ -62,44 +62,42 @@ const Home = () => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-          <button
-            className={styles.button}
+          <input
+            className={styles.submit}
             type="submit"
-          >
-            Generate
-          </button>
+            value="Generate"
+          />  
         </form>
-        {loading && (
-          <progress
-            className={styles.progress}
-          ></progress>
-        )}
       </header>
-      <div style={{ margin: "0rem 2rem" }}>
-        {error && (
-          <div style={{ color: "red" }}>
-            <p>Error: {error}</p>
+      <main className={styles.main}>
+        <section className={styles.options}>
+          {loading && (
+          <div className={styles.loading}>
+            <progress
+              className={styles.progress}
+            ></progress>
           </div>
         )}
-        {revealed && (
-          <CodeEditor code={currentCode} onEditorChange={handleEditorChange} />
-        )}
-      </div>
+          <p style={{margin: 0}}>{currentUsage.total_tokens || 0 } <strong>tkns</strong></p>
+        </section>
+      {error && (
+        <div style={{ color: "red" }}>
+          <p>Error: {error}</p>
+        </div>
+      )}
+      {revealed && (
+        <CodeEditor code={currentCode} onEditorChange={handleEditorChange} />
+      )}
+
       <iframe
-        id="result-iframe"
-        sandbox="allow-scripts allow-modals"
-        frameBorder="0"
+        className={styles.resultFrame}
+        sandbox="allow-scripts allow-modals allow-same-origin"
         width="100%"
+        height="100%"
         srcDoc={currentRender}
       ></iframe>
-      <section className="usage">
-        <ul>
-          <li>{currentUsage.prompt_tokens}</li>
-          <li>{currentUsage.completion_tokens}</li>
-          <li>{currentUsage.total_tokens}</li>
-        </ul>
-        </section>
-    </main>
+      </main>
+    </>
   );
 };
 

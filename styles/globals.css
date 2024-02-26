@@ -1,10 +1,9 @@
-#result-iframe {
-  margin-top: 40px;
-  height: calc(100dvh - 40px);
-  width: 100%;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
+  font-family: sans-serif;
   padding: 0px;
   margin: 0px;
   min-height: 100vh;

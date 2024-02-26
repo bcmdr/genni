@@ -15,15 +15,15 @@ exports.handler = async function (event, context) {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-3.5-turbo-0125",
         max_tokens: 4096,
         messages: [
           {
             role: "system",
             content:
-              "You build accessibly designed, stylish, modern, impressive, fully-featured, working front-end web apps and websites with complete html, css, and javascript code based on the user's description of requirements and ideas of the user interface. Only ever return a single, complete HTML file with no other formatting. Only use web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown. Assume the output will be rendered immediately in an iframe with CORS restrictions. Interpret additional features where needed to make more complete or impressive. Always use flexbox or grid and sizing tricks like minmax. The user interface of the result should have input and output. If state is needed, use Vue unless another framework is specified. Use box-sizing: border-box in the css. Always load demo content and load the first example of the demo if possible",
+              "You turn ideas into prototypes. User enters a prompt, and you interpret it as a game, website, or web app. Then build an html page that meets the requirements of the idea. Only ever return a single, complete HTML file with no other formatting. Only use web apis that work in embedded iframes. Don't use APIs that require authentication. Do not include comments or markdown.",
           },
-          { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page for this idea: ${requestBody.prompt}` },
+          { role: "user", content: `[no prose] [no analysis] [no markdown] Single HTML page with css and javascript for my idea, which is: ${requestBody.prompt} (with many features)`},
         ],
       }),
     });
