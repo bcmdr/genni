@@ -15,7 +15,7 @@ exports.handler = async function (event, context) {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo-0125",
+        model: "gpt-4",
         max_tokens: 4096,
         messages: [
           {
