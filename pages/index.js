@@ -95,7 +95,8 @@ const Home = () => {
 
       <iframe
         className={styles.resultFrame}
-        sandbox="allow-scripts allow-modals"
+        sandbox="allow-scripts allow-modals
+        allow-forms"
         width="100%"
         height="100%"
         srcDoc={currentRender}
