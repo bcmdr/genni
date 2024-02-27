@@ -21,7 +21,8 @@
   border: none;
   color: white;
   background: black;
-  padding: 0.25rem 0.5rem 0.25rem 0rem;
+  padding: 0.25rem 0rem;
+  text-overflow: ellipsis;
 }
 
 .input:focus, .textarea:focus{

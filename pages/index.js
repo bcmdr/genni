@@ -64,6 +64,7 @@ const Home = () => {
             value={prompt}
             enterkeyhint="go"
             onChange={(e) => setPrompt(e.target.value)}
+            onFocus={(e) => e.target.select()}
           />
           <input
             disabled={loading}

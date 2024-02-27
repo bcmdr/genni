@@ -25,7 +25,7 @@ exports.handler = async function (event, context) {
             content:
               "You turn ideas into prototypes. User enters a prompt, and you interpret it as a web page. Then you build an html page that meets the requirements of the idea. Only ever return a single, complete HTML file. Do not include comments or markdown.",
           },
-          { role: "user", content: `[no prose] [no analysis] My user input is ${requestBody.prompt || "blank"}. This input is my idea. For my idea, generate a single html page with css and javascript. The html should be accessible and semantic. CSS requirements are: use 'box-sizing: border-box' on all elements, use high contrast accessible colors, use a visually appealing colour pallette. The javascript should be modern and lightweight and work in a mobile browser. After generating this html page, ensure it meets the requirements. Interpret additional features that would enhance the user experience and interface. Then rewrite the html page with these enhancements. Check the code for errors and rewrite if necessary.`},
+          { role: "user", content: `[no prose] [no analysis] My user input is ${requestBody.prompt || "blank"}. This input is my idea. For my idea, generate a single html page with css and javascript. The html should be accessible and semantic, and it should use meta viewport for mobile. CSS requirements are: use 'box-sizing: border-box' on all elements, use high contrast accessible colors, use a visually appealing colour pallette. The javascript should be modern and lightweight and work in a mobile browser. After generating this html page, ensure it meets the requirements. Add functionality relevant to the completion of the idea.`},
         ],
       }),
     });
