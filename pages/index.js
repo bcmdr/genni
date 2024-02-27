@@ -74,16 +74,7 @@ const Home = () => {
         </form>
       </header>
       <main className={styles.main}>
-        <section className={styles.options}>
-          {loading && (
-          <div className={styles.loading}>
-            <progress
-              className={styles.progress}
-            ></progress>
-          </div>
-        )}
-          <p style={{margin: 0}}>{currentUsage.total_tokens || 0 } <strong>tkns</strong></p>
-        </section>
+        
       {error && (
         <div style={{ color: "red" }}>
           <p>Error: {error}</p>
@@ -92,16 +83,23 @@ const Home = () => {
       {revealed && (
         <CodeEditor code={currentCode} onEditorChange={handleEditorChange} />
       )}
-
       <iframe
         className={styles.resultFrame}
         sandbox="allow-scripts allow-modals
         allow-forms"
-        width="100%"
-        height="100%"
         srcDoc={currentRender}
       ></iframe>
       </main>
+      <footer className={styles.options}>
+          {loading && (
+          <div className={styles.loading}>
+            <progress
+              className={styles.progress}
+            ></progress>
+          </div>
+        )}
+          <p style={{margin: 0}}>{currentUsage.total_tokens || 0 } <strong>tkns</strong></p>
+        </footer>
     </>
   );
 };
