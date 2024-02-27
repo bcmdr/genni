@@ -62,7 +62,7 @@ const Home = () => {
             type="text"
             placeholder="Type Here to Describe Your Idea..."
             value={prompt}
-            enterkeyhint="go"
+            enterkeyhint="Generate"
             onChange={(e) => setPrompt(e.target.value)}
             onFocus={(e) => e.target.select()}
           />

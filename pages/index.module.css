@@ -38,6 +38,10 @@
   padding: 0.25rem 0.5rem;
 }
 
+.submit:disabled {
+  cursor: not-allowed;
+}
+
 .submit,
 .input {
   line-height: 1rem;
