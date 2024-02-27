@@ -15,8 +15,8 @@ exports.handler = async function (event, context) {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        // model: "gpt-3.5-turbo-0125",
-        model: "gpt-4",
+        model: "gpt-3.5-turbo-0125",
+        // model: "gpt-4",
         max_tokens: 2500,
         temperature: 0.5,
         messages: [
@@ -25,7 +25,7 @@ exports.handler = async function (event, context) {
             content:
               "You turn ideas into prototypes. User enters a prompt, and you interpret it as a web page. Then you build an html page that meets the requirements of the idea. Only ever return a single, complete HTML file. Do not include comments or markdown.",
           },
-          { role: "user", content: `[no prose] [no analysis] My user input is ${requestBody.prompt || "blank"}. This input is my idea. For my idea, generate a single html page with css and javascript. The html should be accessible and semantic. The css should use a script tag, classes, and modern styling like "box-sizing: border-box;". The javascript should be modern and lightweight and work in a mobile browser. After generating this html page, ensure it meets the requirements. Interpret additional features that would enhance the user experience and interface. Then rewrite the html page with these enhancements. Check the code for errors and rewrite if necessary.`},
+          { role: "user", content: `[no prose] [no analysis] My user input is ${requestBody.prompt || "blank"}. This input is my idea. For my idea, generate a single html page with css and javascript. The html should be accessible and semantic. The css should use  a a style tag with modern, colorful styling like "box-sizing: border-box;". The javascript should be modern and lightweight and work in a mobile browser. After generating this html page, ensure it meets the requirements. Interpret additional features that would enhance the user experience and interface. Then rewrite the html page with these enhancements. Check the code for errors and rewrite if necessary.`},
         ],
       }),
     });
