@@ -21,6 +21,7 @@ const Home = () => {
   };
 
   const handleSubmit = async (e) => {
+    if (loading) return;
     e.preventDefault();
     setLoading(true);
     try {
@@ -40,10 +41,10 @@ const Home = () => {
       setCurrentRender(data.reply);
       setCurrentUsage(data.usage)
       setError(null);
-      setLoading(false);
     } catch (error) {
       console.error("Error calling OpenAI function:", error);
       setCurrentRender( `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Hmm...<br />That didn't work.</h1><p style="padding: 1rem; text-align: right">Please try again.</p></div>`);
+    } finally {
       setLoading(false);
     }
   };
@@ -65,9 +66,10 @@ const Home = () => {
             onChange={(e) => setPrompt(e.target.value)}
           />
           <input
+            disabled={loading}
             className={styles.submit}
             type="submit"
-            value="Generate"
+            value={ !loading ? "Generate" : "Loading"}
           />  
         </form>
       </header>
