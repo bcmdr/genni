@@ -52,6 +52,7 @@ const Home = () => {
     <>
       <header className={styles.header}>
         <form
+          action="#"
           className={styles.form}
           onSubmit={handleSubmit}
         >
@@ -60,6 +61,7 @@ const Home = () => {
             type="text"
             placeholder="Type Here to Describe Your Idea..."
             value={prompt}
+            enterkeyhint="go"
             onChange={(e) => setPrompt(e.target.value)}
           />
           <input
