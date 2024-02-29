@@ -58,7 +58,7 @@ const Home = () => {
           onSubmit={handleSubmit}
         >
           <textarea
-            className={styles.input}
+            className={styles.textarea}
             type="text"
             placeholder="Type Here to Describe Your Idea..."
             value={prompt}
