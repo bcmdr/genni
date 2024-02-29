@@ -8,7 +8,7 @@ const Home = () => {
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
   const [currentRender, setCurrentRender] = useState(
-    ` <section 
+    `<section 
     style="
       height: calc(100vh - 5rem); 
       display: flex; 
