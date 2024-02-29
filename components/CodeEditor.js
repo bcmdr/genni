@@ -3,12 +3,12 @@ import CodeMirror from "@uiw/react-codemirror";
 import { langs } from "@uiw/codemirror-extensions-langs";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 
-const CodeEditor = ({ code, onEditorChange }) => {
+const CodeEditor = ({ className, code, onEditorChange }) => {
   return (
     <CodeMirror
+      className={className}
       value={code}
       onChange={onEditorChange}
-      height="250px"
       theme={vscodeDark}
       basicSetup={{
         autoCompletion: false,

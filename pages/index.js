@@ -7,10 +7,21 @@ const Home = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
-  const [currentCode, setCurrentCode] = useState("");
   const [currentRender, setCurrentRender] = useState(
-    `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Bring Ideas<br />to Life<br />by Prototyping<br />in Seconds.</h1><p style="padding: 1rem; text-align: right">A few tries should do the trick.</marquee></p></div>`,
+    ` <section 
+    style="
+      height: calc(100vh - 5rem); 
+      display: flex; 
+      flex-direction: column; margin: 2rem;
+      justify-content: space-between; 
+      font-family: sans-serif
+    "
+  >
+  <h1>Bring Ideas<br />to Life<br />by Prototyping<br />in Seconds.</h1>
+  <p style="padding: 1rem; text-align: right">A few tries should do the trick.</p>
+</section>`,
   );
+  const [currentCode, setCurrentCode] = useState(currentRender);
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentUsage, setCurrentUsage] = useState({});
@@ -74,17 +85,19 @@ const Home = () => {
         </form>
       </header>
       <main className={styles.main}>
-      {revealed && (
-        <CodeEditor code={currentCode} onEditorChange={handleEditorChange} />
-      )}
       <iframe
         className={styles.resultFrame}
         sandbox="allow-scripts allow-modals
         allow-forms"
         srcDoc={currentRender}
       ></iframe>
+      {revealed && (
+        <CodeEditor className={styles.codeEditor} code={currentCode} onEditorChange={handleEditorChange} />
+      )}
       </main>
-      <footer className={styles.options}>
+      <footer className={styles.footer}>
+        <div>Terms</div>
+        {/* <div>Copyright © 2024 Brett Commandeur. All rights reserved. Generated content is owned by the user.</div> */}
           {loading && (
           <div className={styles.loading}>
             <progress
@@ -92,7 +105,10 @@ const Home = () => {
             ></progress>
           </div>
         )}
-          <p style={{margin: 0}}>Reveal Code • {currentUsage.total_tokens || 0 } tokens</p>
+          <p style={{margin: 0}}>
+            {currentRender &&
+            <a onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : 'Hide Code'}</a> 
+            } • {currentUsage.total_tokens || 0 } tokens</p>
         </footer>
     </>
   );
