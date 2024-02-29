@@ -18,13 +18,20 @@ const Home = () => {
     "
   >
   <h1>Bring Ideas<br />to Life<br />by Prototyping<br />in Seconds.</h1>
-  <p style="padding: 1rem; text-align: right">A few tries should do the trick.</p>
+  <p style="
+    padding: 1rem; 
+    text-align: right
+  ">
+    A few tries should do the trick.
+  </p>
 </section>`,
   );
   const [currentCode, setCurrentCode] = useState(currentRender);
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentUsage, setCurrentUsage] = useState({});
+  const [copied, setCopied] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   const handleEditorChange = (code) => {
     setCurrentCode(code);
@@ -96,8 +103,9 @@ const Home = () => {
       )}
       </main>
       <footer className={styles.footer}>
-        <div>Terms</div>
-        {/* <div>Copyright © 2024 Brett Commandeur. All rights reserved. Generated content is owned by the user.</div> */}
+   {!showTerms ? <div style={{cursor: "pointer"}} onClick={() => setShowTerms(true)}>Terms</div> :  <div onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur. All rights reserved.<br />Generated content is owned by the user.</div> }
+
+        {/*  */}
           {loading && (
           <div className={styles.loading}>
             <progress
@@ -105,10 +113,13 @@ const Home = () => {
             ></progress>
           </div>
         )}
-          <p style={{margin: 0}}>
-            {currentRender &&
-            <a onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : 'Hide Code'}</a> 
-            } • {currentUsage.total_tokens || 0 } tokens</p>
+          <p style={{margin: 0, display: "flex", gap: "0.5rem", alignItems: "center"}}>
+            {currentRender && <>
+              <a onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</a> 
+            </>
+            }                          <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
+            </button></p>
+
         </footer>
     </>
   );

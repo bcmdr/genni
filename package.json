@@ -1,6 +1,6 @@
 {
-  "name": "next-netlify-starter",
-  "version": "0.5.0",
+  "name": "genni-dev",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
