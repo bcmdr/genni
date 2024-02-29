@@ -40,7 +40,7 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.target.blur();
+    document.activeElement?.blur();
     if (loading) return;
     setLoading(true);
     try {
