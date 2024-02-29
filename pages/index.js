@@ -9,7 +9,7 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [currentCode, setCurrentCode] = useState("");
   const [currentRender, setCurrentRender] = useState(
-    `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Bring Ideas<br />to Life<br />by Prototyping<br />in Seconds.</h1><p style="padding: 1rem; text-align: right">The future is now.</marquee></p></div>`,
+    `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Bring Ideas<br />to Life<br />by Prototyping<br />in Seconds.</h1><p style="padding: 1rem; text-align: right">Give it a few tries.</marquee></p></div>`,
   );
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
