@@ -39,8 +39,9 @@ const Home = () => {
   };
 
   const handleSubmit = async (e) => {
-    if (loading) return;
     e.preventDefault();
+    e.target.blur();
+    if (loading) return;
     setLoading(true);
     try {
       const res = await fetch("/.netlify/functions/generate", {
