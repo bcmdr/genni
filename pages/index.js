@@ -57,14 +57,13 @@ const Home = () => {
           className={styles.form}
           onSubmit={handleSubmit}
         >
-          <input
+          <textarea
             className={styles.input}
             type="text"
             placeholder="Type Here to Describe Your Idea..."
             value={prompt}
             enterkeyhint="Generate"
             onChange={(e) => setPrompt(e.target.value)}
-            onFocus={(e) => e.target.select()}
           />
           <input
             disabled={loading}
@@ -75,12 +74,6 @@ const Home = () => {
         </form>
       </header>
       <main className={styles.main}>
-        
-      {error && (
-        <div style={{ color: "red" }}>
-          <p>Error: {error}</p>
-        </div>
-      )}
       {revealed && (
         <CodeEditor code={currentCode} onEditorChange={handleEditorChange} />
       )}
