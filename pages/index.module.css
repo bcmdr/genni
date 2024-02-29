@@ -14,9 +14,7 @@
 }
 
 .textarea {
-  resize: vertical;
-  min-height: 1.5rem;
-  height: 1.5rem;
+  resize: none;
   overflow: hidden;
   max-height: 5rem;
 }
@@ -32,6 +30,7 @@
   background: black;
   padding: 0.25rem 0rem;
   text-overflow: ellipsis;
+  line-height: 1.2rem;
 }
 
 .input:focus, .textarea:focus{
@@ -39,7 +38,6 @@
 }
 
 .submit {
-  line-height: 1rem;
   flex-shrink: 0;
   color: black;
   background: white;

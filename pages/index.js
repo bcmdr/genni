@@ -9,7 +9,7 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [currentCode, setCurrentCode] = useState("");
   const [currentRender, setCurrentRender] = useState(
-    `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Bring Ideas<br />to Life<br />by Prototyping<br />in Seconds.</h1><p style="padding: 1rem; text-align: right">Give it a few tries.</marquee></p></div>`,
+    `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Bring Ideas<br />to Life<br />by Prototyping<br />in Seconds.</h1><p style="padding: 1rem; text-align: right">A few tries should do the trick.</marquee></p></div>`,
   );
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,8 +57,8 @@ const Home = () => {
           className={styles.form}
           onSubmit={handleSubmit}
         >
-          <textarea
-            className={styles.textarea}
+          <input
+            className={styles.input}
             type="text"
             placeholder="Type Here to Describe Your Idea..."
             value={prompt}
@@ -69,7 +69,7 @@ const Home = () => {
             disabled={loading}
             className={styles.submit}
             type="submit"
-            value={ !loading ? "Generate" : "Loading"}
+            value={ !loading ? "Generate" : "Generating..."}
           />  
         </form>
       </header>
@@ -92,7 +92,7 @@ const Home = () => {
             ></progress>
           </div>
         )}
-          <p style={{margin: 0}}>{currentUsage.total_tokens || 0 } <strong>tkns</strong></p>
+          <p style={{margin: 0}}>Reveal Code • {currentUsage.total_tokens || 0 } tokens</p>
         </footer>
     </>
   );
