@@ -104,7 +104,7 @@ const Home = () => {
       )}
       </main>
       <footer className={styles.footer}>
-   {!showTerms ? <div style={{cursor: "pointer"}} onClick={() => setShowTerms(true)}>Terms</div> :  <div onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur. All rights reserved.<br />Generated content is owned by the user.</div> }
+   {!showTerms ? <div style={{cursor: "pointer"}} onClick={() => setShowTerms(true)}>Terms</div> :  <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div> }
 
         {/*  */}
           {loading && (
