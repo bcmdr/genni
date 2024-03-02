@@ -104,7 +104,6 @@ const Home = () => {
               value={ !loading ? "Generate" : "Generating..."}
             /> 
           </form>
-          <section className={styles.navigation}>{user ? <div className={styles.user}>bcmdr</div> : <div className={styles.login}>Login</div>}</section>
         </section>
       </header>
       <main className={styles.main}>
@@ -118,16 +117,26 @@ const Home = () => {
         <CodeEditor className={styles.codeEditor} code={currentCode} onEditorChange={handleEditorChange} />
       )}
       </main>
-      <footer className={styles.footer}><section style={{display: "flex", gap: "0.5rem", alignItems: "center", padding: "0.5rem"}}><div className={styles.brand}><strong>Genni</strong></div>
-   {!showTerms ? <div style={{cursor: "pointer"}} onClick={() => setShowTerms(true)}>Terms</div> :  <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div> }</section>
+      <footer className={styles.footer}>
+        <section className={styles.navigation}> 
+          {!showTerms ? 
+          <>
+            <div className={styles.brand}>
+              <a href="/">Genni</a>
+            </div>
+            <div onClick={() => setShowTerms(true)}>Terms</div>
+            {user ? <div className={styles.user}>bcmdr</div> : <div className={styles.login}>Login</div>}
+            </> : <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div>
+          }
+        </section>
           {loading && (
-          <div className={styles.loading}>
-            <progress
-              className={styles.progress}
-            ></progress>
-          </div>
-        )}
-          <section style={{margin: 0, display: "flex", gap: "0.5rem", alignItems: "center", padding: "0.5rem"}}>
+            <div className={styles.loading}>
+              <progress
+                className={styles.progress}
+              ></progress>
+            </div>
+          )}
+          <section style={{margin: 0, display: "flex", gap: "0.5rem", alignItems: "center"}}>
             {currentRender &&
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
             }                          
