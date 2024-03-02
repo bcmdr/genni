@@ -71,15 +71,13 @@
   align-items: center;
   padding: 0.5rem;
   justify-content: flex-end;
-  margin-left: auto;
   background: white;
   color: black;
-  padding: 0.5rem 0.75rem;
   border-radius: 0.25rem;
   border: 1px solid white;
   font-size: .7rem;
   cursor: pointer;
-
+  margin-right: -0.25rem;
 }
 
 .main {

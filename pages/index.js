@@ -1,7 +1,8 @@
 // pages/index.js
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CodeEditor from "@components/CodeEditor";
 import styles from "./index.module.css";
+import { supabase } from '../utils/supabase'
 
 const Home = () => {
   const [prompt, setPrompt] = useState("");
@@ -41,13 +42,37 @@ const Home = () => {
   const [user, setUser] = useState(null)
   const promptInput = useRef(null)
 
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+
   const handleEditorChange = (code) => {
     setCurrentCode(code);
     setCurrentRender(code);
   };
 
-  const handleSave = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    })
+
+    if (error) {
+      console.log(error.error_description || error.message)
+    }
+  }
+
+  const handleSave = async (event) => {
+    event.preventDefault();
+    const { error } = await supabase.from('pages').insert({ prompt, code: currentRender })
   }
 
   const handleSubmit = async (e) => {
@@ -131,7 +156,7 @@ const Home = () => {
               <a href="/">Genni</a>
             </div>
             <div onClick={() => setShowTerms(true)}>Terms</div>
-            {user ? <div className={styles.user}>bcmdr</div> : <div className={styles.login}>Login</div>}
+            {session ? <><div className={styles.user}>Profile</div><div onClick={() => supabase.auth.signOut()}>Logout</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
             </> : <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div>
           }
         </section>
