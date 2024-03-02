@@ -58,6 +58,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!session) return;
+    console.log(session);
     let ignore = false;
     async function getProfile() {
       setLoadingProfile(true)
