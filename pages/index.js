@@ -36,11 +36,13 @@ const Home = () => {
   const [currentCode, setCurrentCode] = useState(currentRender);
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(false);
   const [currentUsage, setCurrentUsage] = useState({});
   const [copied, setCopied] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
-  const [user, setUser] = useState(null)
-  const promptInput = useRef(null)
+  const [user, setUser] = useState(null);
+  const promptInput = useRef(null);
+  const [savedPages,setSavedPages] = useState([]);
 
   const [session, setSession] = useState(null)
 
@@ -53,6 +55,36 @@ const Home = () => {
       setSession(session)
     })
   }, [])
+
+  useEffect(() => {
+    let ignore = false;
+    async function getProfile() {
+      if (!session) return;
+      setLoadingProfile(true)
+      const user = session;
+
+      const { data, error } = await supabase
+        .from('pages')
+        .select()
+        .eq('created_by', user.id)
+
+      if (!ignore) {
+        if (error) {
+          console.warn(error)
+        } else if (data) {
+          console.log(data);
+          setSavedPages(data);
+        }
+      }
+
+      setLoadingProfile(false)
+    }
+
+    getProfile()
+    return () => {
+      ignore = true
+    }
+  }), [session]
 
   const handleEditorChange = (code) => {
     setCurrentCode(code);
@@ -143,6 +175,7 @@ const Home = () => {
         </section>
       </header>
       <main className={styles.main}>
+        { (session?.user && !currentRender ) ? <div>{console.log()}</div> : <>
       <iframe
         className={styles.resultFrame}
         sandbox="allow-scripts allow-modals
@@ -151,7 +184,7 @@ const Home = () => {
       ></iframe>
       {revealed && (
         <CodeEditor className={styles.codeEditor} code={currentCode} onEditorChange={handleEditorChange} />
-      )}
+      )}</>}
       </main>
       <footer className={styles.footer}>
         <section className={styles.navigation}> 
