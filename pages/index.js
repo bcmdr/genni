@@ -1,5 +1,5 @@
 // pages/index.js
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CodeEditor from "@components/CodeEditor";
 import styles from "./index.module.css";
 
@@ -39,6 +39,7 @@ const Home = () => {
   const [copied, setCopied] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [user, setUser] = useState(null)
+  const promptInput = useRef(null)
 
   const handleEditorChange = (code) => {
     setCurrentCode(code);
@@ -51,6 +52,10 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!prompt) {
+      promptInput.current.focus(); 
+      return; 
+    }
     document.activeElement?.blur();
     if (loading) return;
     setLoading(true);
@@ -90,6 +95,7 @@ const Home = () => {
             onSubmit={handleSubmit}
           >
             <input
+              ref={promptInput}
               className={styles.input}
               type="text"
               placeholder="Describe Your Idea..."
@@ -136,7 +142,7 @@ const Home = () => {
               ></progress>
             </div>
           )}
-          <section style={{margin: 0, display: "flex", gap: "0.5rem", alignItems: "center"}}>
+          <section className={styles.options}>
             {currentRender &&
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
             }                          
