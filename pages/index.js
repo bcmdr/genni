@@ -57,9 +57,9 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
+    if (!session) return;
     let ignore = false;
     async function getProfile() {
-      if (!session) return;
       setLoadingProfile(true)
       const user = session;
 
