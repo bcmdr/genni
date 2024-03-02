@@ -3,13 +3,13 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
+  padding: 0.25rem 0.5rem;
 }
 
 .navigation {
   font-size: 0.7rem;
   color: white;
   background: rgb(0, 0, 0);
-  padding: 1rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,16 +18,17 @@
 
 .brand {
   font-weight: bold;
-  border-right: 1px solid #888;
+  border-right: 1px solid #666;
   padding-right: 0.5rem;
 }
 
 .login {
   cursor: pointer;
+  padding: 0.5rem 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .generate {
-  background: #111;
   flex-grow: 1;
   display: flex;
 }
@@ -36,6 +37,7 @@
   display: flex; 
   align-items: center;
   flex-grow: 1;
+
 }
 
 .textarea {
@@ -50,7 +52,7 @@
   flex-grow: 1;
   border: none;
   color: white;
-  background: #111;
+  background: black;
   padding: 0.25rem 0.5rem;
   text-overflow: ellipsis;
   margin: 0.25rem;
@@ -63,10 +65,12 @@
   background: none;
   border: none;
   font-size: 0.7rem;
-  padding: 0.5rem 0.5rem;
+  padding: 0.25rem 0.75rem;
   padding-left: 0rem;
   cursor: pointer;
   box-shadow: -2px 0px 10px 0px rgba(0,0,0,0.1);
+  font-weight: bold;
+  border-right: 1px solid #666;
 }
 
 .submit:disabled {
@@ -115,7 +119,7 @@
 }
 
 .footer {
-  color: #eee;
+  color: white;
   background: #111;
   justify-content: right;
   font-size: 0.7rem;

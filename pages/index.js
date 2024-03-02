@@ -92,14 +92,12 @@ const Home = () => {
               enterkeyhint="go"
               onChange={(e) => setPrompt(e.target.value)}
             />
-            <div style={{display: "flex", padding: "0.5rem", gap: "1rem"}}>
             <input
               disabled={loading}
               className={styles.submit}
               type="submit"
               value={ !loading ? "Generate" : "Generating..."}
             /> 
-            </div>
           </form>
           <section className={styles.navigation}>{user ? <div className={styles.user}>bcmdr</div> : <div className={styles.login}>Login</div>}</section>
         </section>
