@@ -176,7 +176,7 @@ const Home = () => {
         </section>
       </header>
       <main className={styles.main}>
-        { (session?.user && !currentRender ) ? <div>{console.log()}</div> : <>
+        { (session?.user && !currentResult ) ? <div>{savedPages}</div> : <>
       <iframe
         className={styles.resultFrame}
         sandbox="allow-scripts allow-modals
