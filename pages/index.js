@@ -84,7 +84,7 @@ const Home = () => {
     return () => {
       ignore = true
     }
-  }), [session]
+  }, [session]); 
 
   const handleEditorChange = (code) => {
     setCurrentCode(code);
