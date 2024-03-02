@@ -61,13 +61,13 @@ const Home = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    if (
-      window.confirm("Logging in will clear your current results. Your next results can be saved to your account after logging in. To copy your current results, select Cancel, then Show Code.")
-    ) {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-      })
-  }
+    if ( currentResult && !window.confirm(
+      "Logging in will clear your current results. Your next results can be saved to your account after logging in. To copy your current results, select Cancel, then Show Code."
+    )) return;
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+  })
 
     if (error) {
       console.log(error.error_description || error.message)
