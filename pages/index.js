@@ -176,7 +176,7 @@ const Home = () => {
         </section>
       </header>
       <main className={styles.main}>
-        { (savedPages && !currentResult && console.log(savedPages)) ? <div>{savedPages.map((page, index) => {return <div key={index}>{page.prompt}</div>})}</div> : <>
+        { (savedPages && !currentResult) ? <div>{savedPages.map((page, index) => {return <div key={index}>{page.prompt}</div>})}</div> : <>
       <iframe
         className={styles.resultFrame}
         sandbox="allow-scripts allow-modals
