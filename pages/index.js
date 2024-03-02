@@ -7,6 +7,7 @@ const Home = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
+  const [currentResult, setCurrentResult] = useState(null);
   const [currentRender, setCurrentRender] = useState(
     `<section 
     style="
@@ -61,6 +62,7 @@ const Home = () => {
 
       const data = await res.json();
       setResponse(data.reply);
+      setCurrentResult(data.reply);
       setCurrentCode(data.reply);
       setCurrentRender(data.reply);
       setCurrentUsage(data.usage)
@@ -126,8 +128,8 @@ const Home = () => {
             {currentRender &&
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
             }                          <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
-            </button>
-            <button className={styles.save} onClick={handleSave}>Save</button></section>
+            </button>{currentResult && 
+            <button className={styles.save} onClick={handleSave}>Save</button>}</section>
 
         </footer>
     </>
