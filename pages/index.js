@@ -62,7 +62,7 @@ const Home = () => {
     let ignore = false;
     async function getProfile() {
       setLoadingProfile(true)
-      const user = session;
+      const { user } = session;
 
       const { data, error } = await supabase
         .from('pages')
