@@ -72,6 +72,7 @@ const Home = () => {
 
   const handleSave = async (event) => {
     event.preventDefault();
+    if (!session?.user) return;
     const { error } = await supabase.from('pages').insert({ prompt, code: currentRender })
   }
 
@@ -156,7 +157,7 @@ const Home = () => {
               <a href="/">Genni</a>
             </div>
             <div onClick={() => setShowTerms(true)}>Terms</div>
-            {session ? <><div className={styles.user}>Profile</div><div onClick={() => supabase.auth.signOut()}>Logout</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
+            {session ? <><div className={styles.user}>Profile</div><div onClick={() => supabase.auth.signOut()}>Logout</div> </>: <div onClick={handleLogin} className={styles.login}>Login to Save</div>}
             </> : <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div>
           }
         </section>
@@ -172,7 +173,7 @@ const Home = () => {
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
             }                          
             {revealed && <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
-            </button>}{currentResult && 
+            </button>}{currentResult && session?.user && 
             <button className={styles.save} onClick={handleSave}>Save</button>}</section>
 
         </footer>
