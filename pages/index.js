@@ -60,10 +60,14 @@ const Home = () => {
   };
 
   const handleLogin = async (event) => {
-    event.preventDefault()
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-    })
+    event.preventDefault();
+    if (
+      window.confirm("Logging in will clear your current results. Your next results can be saved to your account after logging in. To copy your current results, select Cancel, then Show Code.")
+    ) {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      })
+  }
 
     if (error) {
       console.log(error.error_description || error.message)
@@ -157,7 +161,7 @@ const Home = () => {
               <a href="/">Genni</a>
             </div>
             <div onClick={() => setShowTerms(true)}>Terms</div>
-            {session ? <><div className={styles.user}>Profile</div><div onClick={() => supabase.auth.signOut()}>Logout</div> </>: <div onClick={handleLogin} className={styles.login}>Login to Save</div>}
+            {session ? <><div className={styles.user}>Profile</div><div onClick={() => supabase.auth.signOut()}>Logout</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
             </> : <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div>
           }
         </section>
