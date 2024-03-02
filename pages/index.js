@@ -32,11 +32,16 @@ const Home = () => {
   const [currentUsage, setCurrentUsage] = useState({});
   const [copied, setCopied] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
+  const [user, setUser] = useState(null)
 
   const handleEditorChange = (code) => {
     setCurrentCode(code);
     setCurrentRender(code);
   };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,26 +76,31 @@ const Home = () => {
   return (
     <>
       <header className={styles.header}>
-        <form
-          action="#"
-          className={styles.form}
-          onSubmit={handleSubmit}
-        >
-          <input
-            className={styles.input}
-            type="text"
-            placeholder="Type Here to Describe Your Idea..."
-            value={prompt}
-            enterkeyhint="go"
-            onChange={(e) => setPrompt(e.target.value)}
-          />
-          <input
-            disabled={loading}
-            className={styles.submit}
-            type="submit"
-            value={ !loading ? "Generate" : "Generating..."}
-          />  
-        </form>
+        <section className={styles.generate}> 
+          <form
+            action="#"
+            className={styles.form}
+            onSubmit={handleSubmit}
+          >
+            <input
+              className={styles.input}
+              type="text"
+              placeholder="Describe Your Idea..."
+              value={prompt}
+              enterkeyhint="go"
+              onChange={(e) => setPrompt(e.target.value)}
+            />
+            <div style={{display: "flex", padding: "0.5rem", gap: "1rem"}}>
+            <input
+              disabled={loading}
+              className={styles.submit}
+              type="submit"
+              value={ !loading ? "Generate" : "Generating..."}
+            /> 
+            </div>
+          </form>
+          <section className={styles.navigation}>{user ? <div className={styles.user}>bcmdr</div> : <div className={styles.login}>Login</div>}</section>
+        </section>
       </header>
       <main className={styles.main}>
       <iframe
@@ -103,10 +113,8 @@ const Home = () => {
         <CodeEditor className={styles.codeEditor} code={currentCode} onEditorChange={handleEditorChange} />
       )}
       </main>
-      <footer className={styles.footer}>
-   {!showTerms ? <div style={{cursor: "pointer"}} onClick={() => setShowTerms(true)}>Terms</div> :  <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div> }
-
-        {/*  */}
+      <footer className={styles.footer}><section style={{display: "flex", gap: "0.5rem"}}><div className={styles.brand}><strong>Genni</strong></div>
+   {!showTerms ? <div style={{cursor: "pointer"}} onClick={() => setShowTerms(true)}>Terms</div> :  <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div> }</section>
           {loading && (
           <div className={styles.loading}>
             <progress
@@ -114,12 +122,12 @@ const Home = () => {
             ></progress>
           </div>
         )}
-          <p style={{margin: 0, display: "flex", gap: "0.5rem", alignItems: "center"}}>
-            {currentRender && <>
-              <a onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</a> 
-            </>
+          <section style={{margin: 0, display: "flex", gap: "0.5rem", alignItems: "center"}}>
+            {currentRender &&
+              <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
             }                          <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
-            </button></p>
+            </button>
+            <button className={styles.save} onClick={handleSave}>Save</button></section>
 
         </footer>
     </>

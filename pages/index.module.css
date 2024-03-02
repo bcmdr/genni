@@ -1,16 +1,40 @@
 .header {
-  width: 100%;
-  top: 0;
-  background: black;
   display: flex;
-  flex-direction: column; 
-  padding: 0.5rem;
-  flex-shrink: 0; 
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.navigation {
+  font-size: 0.7rem;
+  color: white;
+  background: rgb(0, 0, 0);
+  padding: 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.brand {
+  font-weight: bold;
+  border-right: 1px solid #888;
+  padding-right: 0.5rem;
+}
+
+.login {
+  cursor: pointer;
+}
+
+.generate {
+  background: #111;
+  flex-grow: 1;
+  display: flex;
 }
 
 .form {
   display: flex; 
-  gap: 0.5rem;
+  align-items: center;
+  flex-grow: 1;
 }
 
 .textarea {
@@ -22,29 +46,47 @@
 .input, .textarea {
   font-family: sans-serif;
   font-size: 0.8rem;
-  flex-shrink: 0;
   flex-grow: 1;
   border: none;
   color: white;
-  background: black;
+  background: #111;
   padding: 0.25rem 0.5rem;
   text-overflow: ellipsis;
-  line-height: 1.2rem;
+  margin: 0.25rem;
+  height: 2rem;
 }
 
 .submit {
-  flex-shrink: 0;
-  color: black;
-  background: white;
+  flex-grow: 0;
+  color: white;
+  background: none;
   border: none;
   font-size: 0.7rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+  padding: 0.5rem 0.5rem;
+  padding-left: 0rem;
   cursor: pointer;
+  box-shadow: -2px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
 .submit:disabled {
   cursor: not-allowed;
+}
+
+.save {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0.5rem;
+  justify-content: flex-end;
+  margin-left: auto;
+  background: white;
+  color: black;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  border: none;
+  font-size: .7rem;
+  cursor: pointer;
+
 }
 
 .main {
@@ -101,11 +143,12 @@
 }
 
 .copy {
-  background: white;
-  color: black;
-  padding: 0.25rem 0.5rem;
+  background: none;
+  color: white;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.25rem;
-  border: none;
+  border: 1px solid white;
   font-size: .7rem;
   cursor: pointer;
+  margin-left: 0.25rem;
 }
