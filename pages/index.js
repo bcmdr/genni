@@ -13,12 +13,17 @@ const Home = () => {
     style="
       height: calc(100vh - 5rem); 
       display: flex; 
-      flex-direction: column; margin: 2rem;
+      flex-direction: column; 
+      margin: 2rem;
       justify-content: space-between; 
       font-family: sans-serif
     "
   >
-  <h1>Bring Ideas<br />to Life<br />by Prototyping<br />in Seconds.</h1>
+  <h1>Bring Ideas
+    <br />to Life
+    <br />by Prototyping
+    <br />in Seconds.
+  </h1>
   <p style="
     padding: 1rem; 
     text-align: right
@@ -113,7 +118,7 @@ const Home = () => {
         <CodeEditor className={styles.codeEditor} code={currentCode} onEditorChange={handleEditorChange} />
       )}
       </main>
-      <footer className={styles.footer}><section style={{display: "flex", gap: "0.5rem"}}><div className={styles.brand}><strong>Genni</strong></div>
+      <footer className={styles.footer}><section style={{display: "flex", gap: "0.5rem", alignItems: "center", padding: "0.5rem"}}><div className={styles.brand}><strong>Genni</strong></div>
    {!showTerms ? <div style={{cursor: "pointer"}} onClick={() => setShowTerms(true)}>Terms</div> :  <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div> }</section>
           {loading && (
           <div className={styles.loading}>
@@ -122,11 +127,12 @@ const Home = () => {
             ></progress>
           </div>
         )}
-          <section style={{margin: 0, display: "flex", gap: "0.5rem", alignItems: "center"}}>
+          <section style={{margin: 0, display: "flex", gap: "0.5rem", alignItems: "center", padding: "0.5rem"}}>
             {currentRender &&
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
-            }                          <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
-            </button>{currentResult && 
+            }                          
+            {revealed && <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
+            </button>}{currentResult && 
             <button className={styles.save} onClick={handleSave}>Save</button>}</section>
 
         </footer>
