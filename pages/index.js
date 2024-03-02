@@ -176,7 +176,7 @@ const Home = () => {
         </section>
       </header>
       <main className={styles.main}>
-        { (session?.user && !currentResult ) ? <div>{savedPages}</div> : <>
+        { (session?.user && !currentResult ) ? <div>{savedPages.forEach((page) => {<>{page.prompt}</>})}</div> : <>
       <iframe
         className={styles.resultFrame}
         sandbox="allow-scripts allow-modals
