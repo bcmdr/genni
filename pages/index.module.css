@@ -69,7 +69,7 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.25rem 0.5rem;
   justify-content: flex-end;
   background: white;
   color: black;
@@ -171,7 +171,7 @@
 .copy {
   background: none;
   color: white;
-  padding: 0.5rem 0.5rem;
+  padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   border: 1px solid white;
   font-size: .7rem;
