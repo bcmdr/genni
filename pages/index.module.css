@@ -39,7 +39,7 @@
 
 .input, .textarea {
   font-family: sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.8rem !important;
   flex-grow: 1;
   border: none;
   color: white;
@@ -61,7 +61,7 @@
   color: white;
   background: none;
   border: none;
-  font-size: 0.7rem;
+  font-size: 0.7rem !important;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
   box-shadow: -2px 0px 10px 0px rgba(0,0,0,0.1);
@@ -112,10 +112,8 @@
 }
 
 .pagePreview {
-  font-weight: bold; 
   padding: 1rem;
   border-bottom: 1px solid rgba(245, 245, 245, 0.8);
-  cursor: pointer;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -129,6 +127,7 @@
   padding: 0.25rem;
   margin: -0.25rem;
   line-height: 0rem;
+  cursor: pointer;
 }
 
 .footer {
