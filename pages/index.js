@@ -134,10 +134,10 @@ const Home = () => {
   }
 
   const handleDelete = async (id) => {
-    event.preventDefault();
+    console.log(id);
     if (!window.confirm("Deleting is permanent.")) return;
     if (!session?.user) return;
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('pages')
       .delete()
       .eq('id', id)
@@ -233,7 +233,7 @@ const Home = () => {
             <div 
               className={styles.pagePreview}
               key={index}>
-                <span style={{cursor: "pointer"}}onClick={() => handlePageSelect(page.prompt, page.code)}>{page.prompt}</span>
+                <span style={{cursor: "pointer"}} onClick={() => handlePageSelect(page.prompt, page.code)}>{page.prompt}</span>
                 <span onClick={() => handleDelete(page.id)} className={styles.delete}>&times;</span>
             </div>
         })}
