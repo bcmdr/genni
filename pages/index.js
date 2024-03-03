@@ -5,6 +5,9 @@ import styles from "./index.module.css";
 import { supabase } from '../utils/supabase'
 
 const Home = () => {
+
+  // State
+
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
@@ -48,6 +51,8 @@ const Home = () => {
   const [savedPages,setSavedPages] = useState(null);
   const [session, setSession] = useState(null)
 
+  // Effects
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -88,6 +93,8 @@ const Home = () => {
       ignore = true
     }
   }, [session]); 
+
+  // Handlers
 
   const handleEditorChange = (code) => {
     setCurrentCode(code);
@@ -165,6 +172,15 @@ const Home = () => {
     loadPage(prompt, code);
   }
 
+  const handleLogout = (event) => {
+    if (currentResult && !window.confirm("Logging out will clear your current result.")) return;
+    supabase.auth.signOut();
+    unloadPage();
+    setSavedPages(null);
+  }
+
+  // Functions
+
   const loadPage = (prompt, code) => {
     setPrompt(prompt);
     setCurrentRender(code);
@@ -179,11 +195,22 @@ const Home = () => {
     setCurrentResult(null)
   }
 
-  const handleLogout = (event) => {
-    if (currentResult && !window.confirm("Logging out will clear your current result.")) return;
-    supabase.auth.signOut();
-    unloadPage();
-    setSavedPages(null);
+  // components
+
+  const PromptIcon = () => {
+    return <div className={styles.promptIcon} onClick={() => {promptInput.current.focus()}}>&gt;</div>
+  }
+  
+  const PagePreviews = ({pages}) => {
+    return (
+      <section className={styles.pagePreviewContainer}>
+      <h2>Saved Ideas</h2>
+        <div className={styles.pagePreviewList}>
+          {pages.map((page, index) => {return page && <div onClick={() => handlePageSelect(page.prompt, page.code)} className={styles.pagePreview} key={index}>{page.prompt}
+          </div>})}
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -194,7 +221,7 @@ const Home = () => {
             action="#"
             className={styles.form}
             onSubmit={handleSubmit}
-          >
+          ><PromptIcon />
             <input
               ref={promptInput}
               className={styles.input}
@@ -214,23 +241,21 @@ const Home = () => {
         </section>
       </header>
       <main className={styles.main}>
-        { (savedPages && !currentResult) ? 
-          <section className={styles.pagePreviewContainer}>
-            <h2>Saved Ideas</h2>
-              <div className={styles.pagePreviewList}>
-                {savedPages.map((page, index) => {return page && <div onClick={() => handlePageSelect(page.prompt, page.code)} className={styles.pagePreview} key={index}>{page.prompt}
-                </div>})}
-              </div>
-          </section> : <>
-      <iframe
-        className={styles.resultFrame}
-        sandbox="allow-scripts allow-modals
-        allow-forms"
-        srcDoc={currentRender}
-      ></iframe>
-      {revealed && (
-        <CodeEditor className={styles.codeEditor} code={currentCode} onEditorChange={handleEditorChange} />
-      )}</>}
+        { 
+          (savedPages && !currentResult)
+            ? <PagePreviews pages={savedPages} /> 
+            : <>
+                <iframe
+                  className={styles.resultFrame}
+                  sandbox="allow-scripts allow-modals
+                  allow-forms"
+                  srcDoc={currentRender}
+                ></iframe>
+                {revealed && (
+                  <CodeEditor className={styles.codeEditor} code={currentCode} onEditorChange={handleEditorChange} />
+                )}
+              </>
+          }
       </main>
       <footer className={styles.footer}>
         <section className={styles.navigation}> 
@@ -240,7 +265,7 @@ const Home = () => {
               <a href="/">Genni</a>
             </div>
             <div onClick={() => setShowTerms(true)}>Terms</div>
-            {session ? <><div onClick={() => handleLogout()}>Logout</div><div onClick={() => {unloadPage()}}className={styles.user}>Profile</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
+            {session ? <><div onClick={() => handleLogout()}>Logout</div><div onClick={() => {unloadPage()}}className={styles.user}>Collection</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
             </> : <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div>
           }
         </section>
