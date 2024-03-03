@@ -7,7 +7,7 @@ const CodeEditor = ({ className, code, onEditorChange }) => {
   return (
     <CodeMirror
       className={className}
-      value={code}
+      value={code || ""}
       onChange={onEditorChange}
       theme={vscodeDark}
       basicSetup={{

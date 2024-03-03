@@ -121,15 +121,30 @@ const Home = () => {
 
   const handleSave = async (event) => {
     event.preventDefault();
+    if (saved) return console.log("Already saved.");
     if (!session?.user) return;
     const pageData = { prompt, code: currentRender };
     const { error } = await supabase.from('pages').insert(pageData);
     if (!error) {
       setSavedPages([...savedPages, pageData]);
       setSaved(true);
-      setTimeout(() => setSaved(false), 1000);
     } else {
       setSaved(false);
+    }
+  }
+
+  const handleDelete = async (id) => {
+    event.preventDefault();
+    window.confirm("Deleting is permanent.")
+    if (!session?.user) return;
+    const { data, error } = await supabase
+      .from('pages')
+      .delete()
+      .eq('id', id)
+    if (!error) {
+      setSavedPages(savedPages.filter((page) => { return page.id != id } ));
+    } else {
+      console.error(error);
     }
   }
 
@@ -170,6 +185,7 @@ const Home = () => {
 
   const handlePageSelect = (prompt, code) => {
     loadPage(prompt, code);
+    setSaved(true);
   }
 
   const handleLogout = (event) => {
@@ -193,7 +209,14 @@ const Home = () => {
     setCurrentRender(baseRender); 
     setCurrentCode(null); 
     setCurrentResult(null)
+    setSaved(false);
   }
+
+  // const isSaved = () => {
+  //   for (page of savedPages) {
+  //     if (page.code == currentResult.code 
+  //   }
+  // }
 
   // components
 
@@ -206,8 +229,14 @@ const Home = () => {
       <section className={styles.pagePreviewContainer}>
       <h2>Saved Ideas</h2>
         <div className={styles.pagePreviewList}>
-          {pages.map((page, index) => {return page && <div onClick={() => handlePageSelect(page.prompt, page.code)} className={styles.pagePreview} key={index}>{page.prompt}
-          </div>})}
+          {pages.map((page, index) => {return page && 
+            <div 
+              className={styles.pagePreview}
+              key={index}>
+                <span onClick={() => handlePageSelect(page.prompt, page.code)}>{page.prompt}</span>
+                <span onClick={() => handleDelete(page.id)} className={styles.delete}>&times;</span>
+            </div>
+        })}
         </div>
       </section>
     )
@@ -242,7 +271,7 @@ const Home = () => {
       </header>
       <main className={styles.main}>
         { 
-          (savedPages && !currentResult)
+          (savedPages?.length > 0 && !currentResult)
             ? <PagePreviews pages={savedPages} /> 
             : <>
                 <iframe
@@ -276,14 +305,20 @@ const Home = () => {
               ></progress>
             </div>
           )}
-          <section className={styles.options}>
-            {currentResult &&
+          {currentResult &&
+            <section className={styles.options}>
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
-            }                          
-            {currentResult && <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
-            </button>}{currentResult && session?.user && 
-            <button className={styles.save} onClick={handleSave}>{!saved ? `Save` : `Saved`}</button>}</section>
-
+              <button className={styles.copy} 
+                onClick={() => {
+                  navigator.clipboard.writeText(currentRender);
+                  setCopied(true); 
+                  setTimeout(()=> setCopied(false), 1000)}}>
+                    {!copied ? `Copy` : `Copied`}
+              </button>
+              { session?.user && 
+              <button className={styles.save} onClick={handleSave}>{!saved ? `Save` : `Saved`}</button>}
+            </section>
+          }
         </footer>
     </>
   );
