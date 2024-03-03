@@ -9,7 +9,7 @@ const Home = () => {
   const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
   const [currentResult, setCurrentResult] = useState(null);
-  const [currentRender, setCurrentRender] = useState(
+  const baseRender =
     `<section 
     style="
       height: calc(100vh - 5rem); 
@@ -31,7 +31,9 @@ const Home = () => {
   ">
     A few tries should do the trick.
   </p>
-</section>`,
+</section>`;
+  const [currentRender, setCurrentRender] = useState(
+    baseRender
   );
   const [currentCode, setCurrentCode] = useState(currentRender);
   const [revealed, setRevealed] = useState(false);
@@ -43,7 +45,7 @@ const Home = () => {
   const [showTerms, setShowTerms] = useState(false);
   const [user, setUser] = useState(null);
   const promptInput = useRef(null);
-  const [savedPages,setSavedPages] = useState([]);
+  const [savedPages,setSavedPages] = useState(null);
   const [session, setSession] = useState(null)
 
   useEffect(() => {
@@ -113,9 +115,10 @@ const Home = () => {
   const handleSave = async (event) => {
     event.preventDefault();
     if (!session?.user) return;
-    const { data, error } = await supabase.from('pages').insert({ prompt, code: currentRender });
+    const pageData = { prompt, code: currentRender };
+    const { error } = await supabase.from('pages').insert(pageData);
     if (!error) {
-      setSavedPages([...savedPages, data]);
+      setSavedPages([...savedPages, pageData]);
       setSaved(true);
       setTimeout(() => setSaved(false), 1000);
     } else {
@@ -171,14 +174,16 @@ const Home = () => {
 
   const unloadPage = () => {
     setPrompt(null);
-    setCurrentRender(null); 
+    setCurrentRender(baseRender); 
     setCurrentCode(null); 
     setCurrentResult(null)
   }
 
   const handleLogout = (event) => {
-    setSavedPages([]);
+    if (currentResult && !window.confirm("Logging out will clear your current result.")) return;
     supabase.auth.signOut();
+    unloadPage();
+    setSavedPages(null);
   }
 
   return (
@@ -195,7 +200,7 @@ const Home = () => {
               className={styles.input}
               type="text"
               placeholder="Describe Your Idea..."
-              value={prompt}
+              value={prompt || ""}
               enterKeyHint="go"
               onChange={(e) => setPrompt(e.target.value)}
             />
@@ -209,7 +214,14 @@ const Home = () => {
         </section>
       </header>
       <main className={styles.main}>
-        { (savedPages?.length > 0 && !currentResult) ? <section className={styles.pagePreviewContainer}><h2>Saved Ideas</h2><div className={styles.pagePreviewList}>{savedPages.map((page, index) => {return <div onClick={() => handlePageSelect(page.prompt, page.code)} className={styles.pagePreview} key={index}>{page.prompt}</div>})}</div></section> : <>
+        { (savedPages && !currentResult) ? 
+          <section className={styles.pagePreviewContainer}>
+            <h2>Saved Ideas</h2>
+              <div className={styles.pagePreviewList}>
+                {savedPages.map((page, index) => {return page && <div onClick={() => handlePageSelect(page.prompt, page.code)} className={styles.pagePreview} key={index}>{page.prompt}
+                </div>})}
+              </div>
+          </section> : <>
       <iframe
         className={styles.resultFrame}
         sandbox="allow-scripts allow-modals
@@ -228,7 +240,7 @@ const Home = () => {
               <a href="/">Genni</a>
             </div>
             <div onClick={() => setShowTerms(true)}>Terms</div>
-            {session ? <><div onClick={() => {unloadPage()}}className={styles.user}>Profile</div><div onClick={() => handleLogout()}>Logout</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
+            {session ? <><div onClick={() => handleLogout()}>Logout</div><div onClick={() => {unloadPage()}}className={styles.user}>Profile</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
             </> : <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div>
           }
         </section>

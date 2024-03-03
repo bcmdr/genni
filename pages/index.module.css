@@ -89,6 +89,10 @@
   background: #fff;
 }
 
+.main h2 {
+  text-align: center;
+}
+
 .resultFrame, .codeEditor {
   width: 100%;
   border: none;
