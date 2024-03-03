@@ -243,7 +243,7 @@ const Home = () => {
             {currentResult &&
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
             }                          
-            {<button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
+            {currentResult && <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
             </button>}{currentResult && session?.user && 
             <button className={styles.save} onClick={handleSave}>{!saved ? `Save` : `Saved`}</button>}</section>
 
