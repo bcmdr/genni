@@ -86,7 +86,7 @@
   flex-grow: 1;
   flex-direction: column;
   align-items: stretch;
-  background: white;
+  background: #fff;
 }
 
 .resultFrame, .codeEditor {
@@ -102,6 +102,23 @@
   min-height: 50vh;
   overflow: auto;
   overflow-x: none;
+}
+
+.pagePreviewContainer {
+  padding: 1rem;
+}
+
+.pagePreviewList {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0px -1px 20px 0px rgba(0,0,0,0.1) 
+}
+
+.pagePreview {
+  font-weight: bold; 
+  padding: 1rem;
+  border-bottom: 1px solid rgba(245, 245, 245, 0.8);
+  cursor: pointer;
 }
 
 .footer {

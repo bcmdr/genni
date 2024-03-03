@@ -39,11 +39,11 @@ const Home = () => {
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [currentUsage, setCurrentUsage] = useState({});
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [user, setUser] = useState(null);
   const promptInput = useRef(null);
   const [savedPages,setSavedPages] = useState([]);
-
   const [session, setSession] = useState(null)
 
   useEffect(() => {
@@ -98,9 +98,12 @@ const Home = () => {
       "Logging in will clear your current results. Your next results can be saved to your account after logging in. To copy your current results, select Cancel, then Show Code."
     )) return;
 
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-  })
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin
+      }
+    })
 
     if (error) {
       console.log(error.error_description || error.message)
@@ -110,7 +113,14 @@ const Home = () => {
   const handleSave = async (event) => {
     event.preventDefault();
     if (!session?.user) return;
-    const { error } = await supabase.from('pages').insert({ prompt, code: currentRender })
+    const { data, error } = await supabase.from('pages').insert({ prompt, code: currentRender });
+    if (!error) {
+      setSavedPages([...savedPages, data]);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1000);
+    } else {
+      setSaved(false);
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -148,6 +158,29 @@ const Home = () => {
     }
   };
 
+  const handlePageSelect = (prompt, code) => {
+    loadPage(prompt, code);
+  }
+
+  const loadPage = (prompt, code) => {
+    setPrompt(prompt);
+    setCurrentRender(code);
+    setCurrentResult(code);
+    setCurrentCode(code);
+  }
+
+  const unloadPage = () => {
+    setPrompt(null);
+    setCurrentRender(null); 
+    setCurrentCode(null); 
+    setCurrentResult(null)
+  }
+
+  const handleLogout = (event) => {
+    setSavedPages([]);
+    supabase.auth.signOut();
+  }
+
   return (
     <>
       <header className={styles.header}>
@@ -163,7 +196,7 @@ const Home = () => {
               type="text"
               placeholder="Describe Your Idea..."
               value={prompt}
-              enterkeyhint="go"
+              enterKeyHint="go"
               onChange={(e) => setPrompt(e.target.value)}
             />
             <input
@@ -176,7 +209,7 @@ const Home = () => {
         </section>
       </header>
       <main className={styles.main}>
-        { (savedPages && !currentResult) ? <div>{savedPages.map((page, index) => {return <div key={index}>{page.prompt}</div>})}</div> : <>
+        { (savedPages?.length > 0 && !currentResult) ? <section className={styles.pagePreviewContainer}><h2>Saved Ideas</h2><div className={styles.pagePreviewList}>{savedPages.map((page, index) => {return <div onClick={() => handlePageSelect(page.prompt, page.code)} className={styles.pagePreview} key={index}>{page.prompt}</div>})}</div></section> : <>
       <iframe
         className={styles.resultFrame}
         sandbox="allow-scripts allow-modals
@@ -195,7 +228,7 @@ const Home = () => {
               <a href="/">Genni</a>
             </div>
             <div onClick={() => setShowTerms(true)}>Terms</div>
-            {session ? <><div className={styles.user}>Profile</div><div onClick={() => supabase.auth.signOut()}>Logout</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
+            {session ? <><div onClick={() => {unloadPage()}}className={styles.user}>Profile</div><div onClick={() => handleLogout()}>Logout</div> </>: <div onClick={handleLogin} className={styles.login}>Login</div>}
             </> : <div style={{cursor: "pointer"}} onClick={() => setShowTerms(false)}>Copyright © 2024 Brett Commandeur.<br />Generated content is owned by the user.</div>
           }
         </section>
@@ -207,12 +240,12 @@ const Home = () => {
             </div>
           )}
           <section className={styles.options}>
-            {currentRender &&
+            {currentResult &&
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
             }                          
-            {revealed && <button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
+            {<button className={styles.copy} onClick={() => {navigator.clipboard.writeText(currentRender); setCopied(true); setTimeout(()=> setCopied(false), 1000)}}>{!copied ? `Copy` : `Copied`}
             </button>}{currentResult && session?.user && 
-            <button className={styles.save} onClick={handleSave}>Save</button>}</section>
+            <button className={styles.save} onClick={handleSave}>{!saved ? `Save` : `Saved`}</button>}</section>
 
         </footer>
     </>
