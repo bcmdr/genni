@@ -138,7 +138,7 @@ const Home = () => {
 
   const handleDelete = async (id) => {
     console.log(id);
-    if (!window.confirm("You sure? Deleting is permanent.")) return;
+    if (!window.confirm("You sure? Deleting is permanent.")) return;  
     if (!session?.user) return;
     const { error } = await supabase
       .from('pages')
@@ -279,7 +279,7 @@ const Home = () => {
                 <iframe
                   className={styles.resultFrame}
                   sandbox="allow-scripts allow-modals
-                  allow-forms"
+                  allow-forms allow-popups"
                   srcDoc={currentRender}
                 ></iframe>
                 {revealed && (
