@@ -44,6 +44,7 @@ const Home = () => {
   const [currentUsage, setCurrentUsage] = useState({});
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [user, setUser] = useState(null);
   const promptInput = useRef(null);
@@ -120,8 +121,10 @@ const Home = () => {
 
   const handleSave = async (event) => {
     event.preventDefault();
-    if (saved) return console.log("Already saved.");
+    if (saved) return alert("Already saved. To unsave it, please delete this from your collection.");
     if (!session?.user) return;
+
+    setSaving(true);
     const pageData = { prompt, code: currentRender };
     const { error } = await supabase.from('pages').insert(pageData);
     if (!error) {
@@ -130,11 +133,12 @@ const Home = () => {
     } else {
       setSaved(false);
     }
+    setSaving(false);
   }
 
   const handleDelete = async (id) => {
     console.log(id);
-    if (!window.confirm("Deleting is permanent.")) return;
+    if (!window.confirm("You sure? Deleting is permanent.")) return;
     if (!session?.user) return;
     const { error } = await supabase
       .from('pages')
@@ -303,18 +307,20 @@ const Home = () => {
               ></progress>
             </div>
           )}
-          {currentResult &&
+          {(currentResult && !error) &&
             <section className={styles.options}>
               <div onClick={() => setRevealed(!revealed)}>{!revealed ? `Show Code` : ' Hide Code'}</div> 
-              <button className={styles.copy} 
-                onClick={() => {
-                  navigator.clipboard.writeText(currentRender);
-                  setCopied(true); 
-                  setTimeout(()=> setCopied(false), 1000)}}>
-                    {!copied ? `Copy` : `Copied`}
-              </button>
+              {revealed && 
+                <button className={styles.copy} 
+                  onClick={() => {
+                    navigator.clipboard.writeText(currentRender);
+                    setCopied(true); 
+                    setTimeout(()=> setCopied(false), 1000)}}>
+                      {!copied ? `Copy` : `Copied`}
+                </button>
+              }
               { session?.user && 
-              <button className={styles.save} onClick={handleSave}>{!saved ? `Save` : `Saved`}</button>}
+              <button className={!saved ? styles.save : styles.saved} onClick={handleSave}>{saving ? '...' : !saved ? `Save` : `Saved`}</button>}
             </section>
           }
         </footer>
