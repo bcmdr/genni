@@ -9,7 +9,6 @@ const Home = () => {
   // State
 
   const [prompt, setPrompt] = useState("");
-  const [response, setResponse] = useState("");
   const [error, setError] = useState(null);
   const [currentResult, setCurrentResult] = useState(null);
   const baseRender =
@@ -169,12 +168,11 @@ const Home = () => {
       }
 
       const data = await res.json();
-      setResponse(data.reply);
-      setCurrentResult(data.reply);
-      setCurrentCode(data.reply);
-      setCurrentRender(data.reply);
-      setCurrentUsage(data.usage)
+      loadPage(prompt, data.reply);
+      setSaved(false);
+      setCurrentUsage(data.usage);
       setError(null);
+
     } catch (error) {
       console.error("Error calling OpenAI function:", error);
       setCurrentRender( `<div style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif"><h1>Hmm...<br />That didn't work.</h1><p style="padding: 1rem; text-align: right">Please try again.</p></div>`);
