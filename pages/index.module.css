@@ -6,6 +6,17 @@
   position: sticky;
   top: 0;
   background: black;
+  color: white;
+}
+
+.header nav {
+  font-size: 0.8rem;
+}
+
+.header nav div {
+  cursor: pointer;
+  margin-left: 1rem;
+  margin-right: 0.4rem;
 }
 
 .login {
@@ -19,7 +30,7 @@
 
 .form {
   font-family: monospace;
-  display: flex; 
+  display: flex;
   align-items: center;
   flex-grow: 1;
 }
@@ -37,22 +48,25 @@
   max-height: 5rem;
 }
 
-.input, .textarea {
+.input,
+.textarea {
+  border: none;
+  border-left: 1px solid rgb(168, 167, 167);
   font-family: sans-serif;
   font-size: 0.8rem !important;
   flex-grow: 1;
-  border: none;
   color: white;
   background: black;
   padding: 0.25rem 0.5rem;
-  padding-left: 0.25rem;
+  padding-left: 1rem;
   text-overflow: ellipsis;
   margin: 0.5rem 0.25rem;
   margin-left: 0.5rem;
-  height: 2rem;
+  height: 1.5rem;
 }
 
-.input:focus, .textarea:focus {
+.input:focus,
+.textarea:focus {
   padding-left: 0.5rem;
 }
 
@@ -64,7 +78,7 @@
   font-size: 0.7rem !important;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
-  box-shadow: -2px 0px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: -2px 0px 10px 0px rgba(0, 0, 0, 0.1);
   font-weight: bold;
   border-radius: 0px;
   margin: 0.25rem;
@@ -87,14 +101,16 @@
   text-align: center;
 }
 
-.resultFrame, .codeEditor {
+.resultFrame,
+.codeEditor {
   width: 100%;
   border: none;
   flex-grow: 1;
   overflow: auto;
 }
 
-.codeEditor, .codeEditor > * > * {
+.codeEditor,
+.codeEditor > * > * {
   font-size: 0.75rem;
   max-height: 70dvh;
   min-height: 70dvh;
@@ -108,7 +124,7 @@
 .pagePreviewList {
   background: #fff;
   border-radius: 5px;
-  box-shadow: 0px -1px 20px 0px rgba(0,0,0,0.1) 
+  box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .pagePreview {
@@ -118,12 +134,13 @@
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
+  list-style-type: none;
 }
 
 .delete {
   font-weight: normal;
   color: #aaa;
-  font-size: .7rem;
+  font-size: 0.7rem;
   padding: 0.25rem;
   margin: -0.25rem;
   line-height: 0rem;
@@ -137,12 +154,12 @@
   color: white;
   background: #111;
   font-size: 0.8rem;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 0px;
-  box-shadow: 0px 0px 10px -5px rgba(0,0,0,1);
+  box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 1);
 }
 
 .footer div {
@@ -168,28 +185,20 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 0rem;
+  margin-left: 0.5rem;
 }
 
 .navigation > div {
   padding: 0rem 0.5rem;
 }
 
-.navigation > div:not(:first-child) {
-  padding-right: 0rem;
-}
-
-.navigation > div:last-child {
-  border: none;
-}
-
 .brand {
   font-weight: bold;
-  border-right: 1px solid #666;
 }
 
 .brand a {
   color: inherit;
-  text-decoration: inherit; 
+  text-decoration: inherit;
 }
 
 .options {
@@ -235,4 +244,3 @@
   cursor: pointer;
   margin-right: -0.25rem;
 }
-

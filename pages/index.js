@@ -17,18 +17,40 @@ import {
   deleteDoc,
 } from "../utils/firebase";
 
+const PagePreviews = ({ pages, onLoadPagePreview, name }) => {
+  console.log(pages);
+  return (
+    <div className={styles.pagePreviewContainer}>
+      {name && <h2>{name?.split()[0]}'s Pages</h2>}
+      {pages?.map((page) => (
+        <div className={styles.pagePreviewList}>
+          <div
+            className={styles.pagePreview}
+            key={page.id}
+            onClick={() => {
+              onLoadPagePreview(page.prompt, page.code);
+            }}
+          >
+            {page.prompt}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const Home = () => {
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState(null);
   const [currentResult, setCurrentResult] = useState(null);
   const baseRender = `<section 
-     style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: space-between; font-family: sans-serif">
-     <h1>Bring Ideas to Life</h1><p style="padding: 1rem; text-align: right">A few tries should do the trick.</p></section>`;
+     style="height: calc(100vh - 5rem); display: flex; flex-direction: column; margin: 2rem; justify-content: center; font-family: sans-serif">
+     <h1 style="text-align: center; font-size: 2rem">Bring Ideas to Life</h1><p style="text-align: center">A few tries should do the trick.</p></section>`;
   const [currentRender, setCurrentRender] = useState(baseRender);
   const [currentCode, setCurrentCode] = useState(currentRender);
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loadingProfile, setLoadingProfile] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(true);
   const [currentUsage, setCurrentUsage] = useState({});
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -42,6 +64,7 @@ const Home = () => {
   // Effects
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log(user); // Debugging
       if (user) {
         setSession(user);
       } else {
@@ -57,20 +80,27 @@ const Home = () => {
 
     async function getProfile() {
       setLoadingProfile(true);
-      const q = query(
-        collection(db, "pages"),
-        where("created_by", "==", session.uid)
-      );
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
 
-      if (!ignore) {
-        setSavedPages(data);
+      // Query the sub-collection "userPages" within the user's document
+      const q = query(collection(db, `pages/${session.uid}/userPages`));
+
+      try {
+        const querySnapshot = await getDocs(q);
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        if (!ignore) {
+          setSavedPages(data); // Store only this user's pages
+        }
+        setLoadingProfile(false);
+      } catch (error) {
+        console.error("Error fetching pages: ", error);
+        setLoadingProfile(false);
+      } finally {
+        setLoadingProfile(false);
       }
-      setLoadingProfile(false);
     }
 
     getProfile();
@@ -102,13 +132,18 @@ const Home = () => {
 
     setSaving(true);
     const pageData = { prompt, code: currentRender, created_by: session.uid };
+
     try {
-      await addDoc(collection(db, "pages"), pageData);
-      setSavedPages([...savedPages, pageData]);
+      // Add the document to the global "pages" collection
+      const docRef = await addDoc(collection(db, "pages"), pageData);
+
+      // Use docRef.id to get the ID of the newly created document
+      setSavedPages([...savedPages, { id: docRef.id, ...pageData }]);
       setSaved(true);
     } catch (error) {
-      console.error(error);
+      console.error("Error saving document: ", error);
     }
+
     setSaving(false);
   };
 
@@ -177,12 +212,26 @@ const Home = () => {
     setSaved(false);
   };
 
+  const handleLoadPagePreview = (prompt, code) => {
+    loadPage(prompt, code);
+  };
+
   return (
     <>
       <header className={styles.header}>
+        {currentResult ? (
+          <nav>
+            <div onClick={unloadPage}>Back</div>
+          </nav>
+        ) : (
+          <nav>
+            <div className={styles.brand}>
+              <a href="/">Genni</a>
+            </div>
+          </nav>
+        )}
         <section className={styles.generate}>
           <form action="#" className={styles.form} onSubmit={handleSubmit}>
-            {/* <PromptIcon /> */}
             <input
               ref={promptInput}
               className={styles.input}
@@ -203,7 +252,11 @@ const Home = () => {
       </header>
       <main className={styles.main}>
         {savedPages?.length > 0 && !currentResult ? (
-          <PagePreviews pages={savedPages} />
+          <PagePreviews
+            pages={savedPages}
+            onLoadPagePreview={handleLoadPagePreview}
+            name={session?.displayName}
+          />
         ) : (
           <>
             <iframe
@@ -242,9 +295,6 @@ const Home = () => {
         <section className={styles.navigation}>
           {!showTerms ? (
             <>
-              <div className={styles.brand}>
-                <a href="/">Genni</a>
-              </div>
               <div onClick={() => setShowTerms(true)}>Terms</div>
               {session ? (
                 <>
@@ -297,7 +347,7 @@ const Home = () => {
                 {!copied ? `Copy` : `Copied`}
               </button>
             )}
-            {session?.user && (
+            {session?.uid && (
               <button
                 className={!saved ? styles.save : styles.saved}
                 onClick={handleSave}
